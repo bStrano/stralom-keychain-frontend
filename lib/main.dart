@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_page.dart';
 
 void main() {
@@ -24,9 +25,9 @@ var kColorSchemeLight = ColorScheme.fromSeed(
 );
 
 var kColorSchemeDark = ColorScheme.fromSeed(
-  seedColor: const Color.fromRGBO(255, 0, 131,1),
+  seedColor: const Color.fromRGBO(255, 0, 131, 1),
   brightness: Brightness.dark,
-  primary:  const Color.fromRGBO(255, 0, 131,1),
+  primary: const Color.fromRGBO(255, 0, 131, 1),
   surface: const Color.fromRGBO(21, 28, 36, 1),
   background: const Color.fromRGBO(27, 36, 46, 1),
 );
@@ -39,6 +40,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Stralom Keychain',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       // theme: ThemeData().copyWith(
       //   colorScheme: kColorSchemeLight,
       //   appBarTheme: const AppBarTheme().copyWith(
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget {
       // ),
       darkTheme: ThemeData(
         fontFamily: 'Roboto',
-        highlightColor: const Color.fromRGBO(255, 0, 131,1),
+        highlightColor: const Color.fromRGBO(255, 0, 131, 1),
         colorScheme: kColorSchemeDark,
         scaffoldBackgroundColor: kColorSchemeDark.background,
         cardColor: kColorSchemeDark.surface,
@@ -79,7 +82,6 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: kColorSchemeDark.onSurface),
           color: kColorSchemeDark.surface,
           elevation: 0,
-
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
@@ -97,7 +99,7 @@ class MyApp extends StatelessWidget {
         // ),
       ),
       themeMode: ThemeMode.dark,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Stralom Keychain'),
     );
   }
 }
@@ -111,28 +113,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-           title: Text(widget.title),
-          actions: const [
-            TextButton(
-              onPressed: null,
-              child: Text('Log in'),
-            ),
-            TextButton(
-              onPressed: null,
-              child: Text('Sing up'),
-            ),
-          ],
-
-        ),
-        body: Container(
-          padding: const EdgeInsets.only(top: 50),
-          child: const ShareableSecretPage(),
-        ),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: const [
+          TextButton(
+            onPressed: null,
+            child: Text('Log in'),
+          ),
+          TextButton(
+            onPressed: null,
+            child: Text('Sing up'),
+          ),
+        ],
+      ),
+      body: Container(
+        padding: const EdgeInsets.only(top: 50),
+        child: const ShareableSecretPage(),
+      ),
     );
   }
 }

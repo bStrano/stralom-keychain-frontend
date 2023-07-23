@@ -1,0 +1,9 @@
+{
+  "shareSecret": "Share secret",
+  "shareSecretDescription": "Keep sensitive information out of your unsecure channels. Share a secret link that is available for a limited time.",
+  "shareableSecretLifetimeInputPlaceholder": "Define the lifetime of the secret",
+
+  "shareableSecretSubmit": "Share secret",
+  "shareableSecretInputPlaceholder": "Digite o segredo que deseja compartilhar",
+  "shareableSecretPassword": "Digite a senha que será necessária para visualizar o segredo"
+}
