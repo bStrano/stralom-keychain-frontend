@@ -69,6 +69,45 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
+  fonts:
+    - family: BungeeSpice
+      fonts:
+        - asset: assets/fonts/BungeeSpice-Regular.ttf
+    - family: LilitaOne
+      fonts:
+        - asset: assets/fonts/LilitaOne-Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-BlackItalic.ttf
+          style: italic
+          weight: 900
+        - asset: assets/fonts/Roboto-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Roboto-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto-LightItalic.ttf
+          style: italic
+          weight: 300
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-MediumItalic.ttf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Roboto-ThinItalic.ttf
+          style: italic
+          weight: 100
+
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
