@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:keychain_frontend/models/register_shareable_secret.dart';
 
 import '../../apis/shareable_secret_api.dart';
 import '../../enum/lifetime_enum.dart';
@@ -12,14 +13,26 @@ class ShareableSecretPage extends StatefulWidget {
 }
 
 class _ShareableSecretPageState extends State<ShareableSecretPage> {
+  String _secret = '';
   bool isExpanded = false;
-  num maxViewCount = 1;
-  LifetimeEnum lifetimeEnum = LifetimeEnum.oneDay;
+  num _maxViewCount = 1;
+  LifetimeEnum _lifetime = LifetimeEnum.oneDay;
+  String? _secretPassword;
+
+  final _formKey = GlobalKey<FormState>();
 
   void _toggleExpanded() {
     setState(() {
       isExpanded = !isExpanded;
     });
+  }
+
+  void _shareSecret() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      ShareableSecretApi.registerShareableSecret(RegisterShareableSecret(
+          _secret, _lifetime, _maxViewCount, _secretPassword));
+    }
   }
 
   @override
@@ -64,131 +77,152 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
               child: Padding(
                   padding: const EdgeInsets.all(40),
                   child: SizedBox(
-                    width: cardWidth,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // Align text to the left
-                      children: [
-                        TextField(
-                          maxLines: 5,
-                          maxLength: 1000,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            labelText: AppLocalizations.of(context)!
-                                .shareableSecretInputPlaceholder,
-                          ),
-                        ),
-                        Column(
+                      width: cardWidth,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           // Align text to the left
                           children: [
-                            Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .shareableSecretLifetimeInputPlaceholder,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                )),
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(8)),
-                                    border: Border.all(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
-                                    ),
-                                  ),
-                                  child: DropdownButton<num>(
-                                    underline: Container(),
-                                    focusColor: Colors.transparent,
-                                    isExpanded: true,
-                                    value: maxViewCount,
-                                    onChanged: (num? newValue) {
-                                      if (newValue != null) {
-                                        setState(() {
-                                          maxViewCount = newValue;
-                                        });
-                                      }
-                                    },
-                                    items: maxViewCountEntries,
-                                  ),
-                                )),
-                                const SizedBox(width: 30),
-                                const Text('ou'),
-                                const SizedBox(width: 30),
-                                Expanded(
-                                    child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(8)),
-                                    border: Border.all(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
-                                    ),
-                                  ),
-                                  child: DropdownButton<LifetimeEnum>(
-                                    underline: Container(),
-                                    focusColor: Colors.transparent,
-                                    isExpanded: true,
-                                    value: lifetimeEnum,
-                                    onChanged: (LifetimeEnum? newValue) {
-                                      if (newValue != null) {
-                                        setState(() {
-                                          lifetimeEnum = newValue;
-                                        });
-                                      }
-                                    },
-                                    items: lifetimeEntries,
-                                  ),
-                                )),
-                              ],
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 30),
-                        TextButton(
-                            onPressed: _toggleExpanded,
-                            child: SizedBox(
-                                child: Row(children: [
-                              const Icon(Icons.add),
-                              Text(AppLocalizations.of(context)!
-                                  .additionalInfo
-                                  .toUpperCase()),
-                            ]))),
-                        if (isExpanded)
-                          Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: TextField(
-                              maxLines: 1,
+                            TextFormField(
+                              maxLines: 5,
                               maxLength: 1000,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return AppLocalizations.of(context)!
+                                      .validatorNotEmpty;
+                                } else if (value.length > 1000) {
+                                  return AppLocalizations.of(context)!
+                                      .validatorMinLength(1000);
+                                }
+
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _secret = value!;
+                              },
                               decoration: InputDecoration(
                                 border: const OutlineInputBorder(),
                                 labelText: AppLocalizations.of(context)!
                                     .shareableSecretInputPlaceholder,
                               ),
                             ),
-                          ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text(AppLocalizations.of(context)!
-                                  .shareableSecretSubmit
-                                  .toUpperCase()),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // Align text to the left
+                              children: [
+                                Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .shareableSecretLifetimeInputPlaceholder,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    )),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      child: DropdownButtonFormField<num>(
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        focusColor: Colors.transparent,
+                                        isExpanded: true,
+                                        value: _maxViewCount,
+                                        onChanged: (num? newValue) {
+                                          if (newValue != null) {
+                                            setState(() {
+                                              _maxViewCount = newValue;
+                                            });
+                                          }
+                                        },
+                                        items: maxViewCountEntries,
+                                      ),
+                                    )),
+                                    const SizedBox(width: 30),
+                                    const Text('ou'),
+                                    const SizedBox(width: 30),
+                                    Expanded(
+                                        child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      child:
+                                          DropdownButtonFormField<LifetimeEnum>(
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        focusColor: Colors.transparent,
+                                        isExpanded: true,
+                                        value: _lifetime,
+                                        onChanged: (LifetimeEnum? newValue) {
+                                          if (newValue != null) {
+                                            setState(() {
+                                              _lifetime = newValue;
+                                            });
+                                          }
+                                        },
+                                        items: lifetimeEntries,
+                                      ),
+                                    )),
+                                  ],
+                                )
+                              ],
                             ),
-                          ),
+                            const SizedBox(height: 30),
+                            TextButton(
+                                onPressed: _toggleExpanded,
+                                child: SizedBox(
+                                    child: Row(children: [
+                                  const Icon(Icons.add),
+                                  Text(AppLocalizations.of(context)!
+                                      .additionalInfo
+                                      .toUpperCase()),
+                                ]))),
+                            if (isExpanded)
+                              Container(
+                                margin: const EdgeInsets.only(top: 20),
+                                child: TextFormField(
+                                  onSaved: (value) {
+                                    _secretPassword = value!;
+                                  },
+                                  validator: (value) {
+                                    if (value != null) {
+                                      if (value.length > 1000) {
+                                        return AppLocalizations.of(context)!
+                                            .validatorMinLength(1000);
+                                      }
+                                    }
+                                    return null;
+                                  },
+                                  maxLines: 1,
+                                  maxLength: 1000,
+                                  decoration: InputDecoration(
+                                    border: const OutlineInputBorder(),
+                                    labelText: AppLocalizations.of(context)!
+                                        .shareableSecretInputPlaceholder,
+                                  ),
+                                ),
+                              ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 20),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _shareSecret();
+                                  },
+                                  child: Text(AppLocalizations.of(context)!
+                                      .shareableSecretSubmit
+                                      .toUpperCase()),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ))),
+                      )))),
         ],
       ),
     ) // This trailing comma makes auto-formatting nicer for build methods.

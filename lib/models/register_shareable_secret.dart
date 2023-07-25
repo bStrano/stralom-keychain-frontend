@@ -1,6 +1,8 @@
+import '../enum/lifetime_enum.dart';
+
 class RegisterShareableSecret {
   final String secret;
-  final String lifetime;
+  final LifetimeEnum lifetime;
   final num maxViewCount;
   final String? secretPassword;
 

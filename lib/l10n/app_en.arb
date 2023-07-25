@@ -2,15 +2,15 @@
   "shareSecret": "Share secret",
 
 
-  "shareSecretDescription": "Keep sensitive information out of your unsecure channels. Share a secret link that is available for a limited time.",
-  "shareableSecretLifetimeInputPlaceholder": "Define the lifetime of the secret",
-
   "shareableSecretSubmit": "Share secret",
   "shareableSecretInputPlaceholder": "Enter your secret here",
   "shareableSecretPassword": "Enter the password which will be required to visualize your secret",
+  "shareSecretDescription": "Keep sensitive information out of your unsecure channels. Share a secret link that is available for a limited time.",
+  "shareableSecretLifetimeInputPlaceholder": "Define the lifetime of the secret",
 
 
-
+  "validatorNotEmpty": "This field is required",
+  "validatorMinLength": "This field must be at least {min} characters long",
   "or": "or",
   "additionalInfo": "Additional information"
 
