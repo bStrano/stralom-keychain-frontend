@@ -8,7 +8,16 @@
   "shareSecretDescription": "Keep sensitive information out of your unsecure channels. Share a secret link that is available for a limited time.",
   "shareableSecretLifetimeInputPlaceholder": "Define the lifetime of the secret",
 
+  "shareableSecretRegisterLoadingMessage": "Your shareable link is being generated!",
 
+  "shareableSecretFeedbackTitle": "Your shareable link is ready!",
+  "shareableSecretFeedbackLifetime": "Your secret will be available for {viewCount} or {lifeTime}",
+  "shareableSecretFeedbackSendMail": "{emoji} Send the link by email",
+  "shareableSecretFeedbackCreateAnother": "{emoji} Create another secret",
+  "shareableSecretFeedbackPasswordTitle": "Password (Necessary to decrypt your secret)",
+
+  "shareableSecret": "Shareable Secret",
+  "password": "Password",
   "validatorNotEmpty": "This field is required",
   "validatorMinLength": "This field must be at least {min} characters long",
   "or": "or",

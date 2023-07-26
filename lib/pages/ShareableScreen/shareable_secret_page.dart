@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:keychain_frontend/models/register_shareable_secret.dart';
+import 'package:keychain_frontend/pages/ShareableScreen/widgets/shareable_secret_feedback.dart';
 
 import '../../apis/shareable_secret_api.dart';
 import '../../enum/lifetime_enum.dart';
@@ -19,6 +19,8 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
   LifetimeEnum _lifetime = LifetimeEnum.oneDay;
   String? _secretPassword;
 
+  bool showFeedback = false;
+
   final _formKey = GlobalKey<FormState>();
 
   void _toggleExpanded() {
@@ -30,8 +32,11 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
   void _shareSecret() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      ShareableSecretApi.registerShareableSecret(RegisterShareableSecret(
-          _secret, _lifetime, _maxViewCount, _secretPassword));
+      // ShareableSecretApi.registerShareableSecret(RegisterShareableSecret(
+      //     _secret, _lifetime, _maxViewCount, _secretPassword));
+      setState(() {
+        showFeedback = true;
+      });
     }
   }
 
@@ -52,6 +57,9 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
                 ))
             .toList();
 
+    if (showFeedback) {
+      return (const ShareableSecretFeedback());
+    }
     return (Align(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
