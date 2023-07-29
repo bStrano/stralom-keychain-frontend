@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.stralom.keychain",
+      "sha256_cert_fingerprints":
+      ["98:18:0A:48:64:5E:0D:C6:5F:A0:9C:1B:A3:D1:21:7E:8A:65:AA:8E:7F:F6:15:5D:5B:37:73:7C:83:FB:64:C8"]
+    }
+  }
+]

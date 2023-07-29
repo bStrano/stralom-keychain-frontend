@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_register_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (_, __) => const MyHomePage(title: 'Stralom Keychain'),
+      routes: [
+        GoRoute(
+          path: 'details',
+          builder: (_, __) => Scaffold(
+            appBar: AppBar(title: const Text('Details Screen')),
+          ),
+        ),
+      ],
+    ),
+  ],
+);
 
 var kColorSchemeLight = ColorScheme.fromSeed(
   seedColor: Colors.deepPurple,
@@ -38,7 +56,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: _router,
       title: 'Stralom Keychain',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -99,7 +118,6 @@ class MyApp extends StatelessWidget {
         // ),
       ),
       themeMode: ThemeMode.dark,
-      home: const MyHomePage(title: 'Stralom Keychain'),
     );
   }
 }

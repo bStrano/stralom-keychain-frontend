@@ -1,4 +1,4 @@
-package com.example.keychain_frontend
+package com.stralom.keychain
 
 import io.flutter.embedding.android.FlutterActivity
 
