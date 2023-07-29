@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_page.dart';
+import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_register_page.dart';
 
 void main() {
   runApp(const MyApp());
