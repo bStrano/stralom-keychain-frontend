@@ -21,4 +21,4 @@ COPY . .
 RUN flutter build web
 # Stage 2 - Create the run-time image
 FROM --platform=linux/amd64 nginx:1.21.1-alpine
-COPY --from=build-env /app/build/web /usr/share/nginx/html
+COPY --from=build /app/build/web /usr/share/nginx/html
