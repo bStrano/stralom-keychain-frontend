@@ -1,5 +1,5 @@
 #Stage 1 - Install dependencies and build the app in a build environment
-FROM --platform=linux/amd64 debian:latest AS build
+FROM --platform=linux/amd64 debian:latest AS builder
 # Install flutter dependencies
 RUN apt-get update
 RUN apt-get install -y curl xz-utils git
@@ -16,9 +16,10 @@ ENV PATH="$PATH:/development/flutter/bin"
 RUN  git config --global --add safe.directory /development/flutter
 
 # Copy files to container and build
-WORKDIR app
+WORKDIR /app
 COPY . .
 RUN flutter build web
+
 # Stage 2 - Create the run-time image
-FROM --platform=linux/amd64 nginx:1.21.1-alpine
-COPY --from=build /app/build/web /usr/share/nginx/html
+FROM --platform=linux/amd64 nginx:1.25.1-alpine
+COPY --from=builder /app/build/web /usr/share/nginx/html
