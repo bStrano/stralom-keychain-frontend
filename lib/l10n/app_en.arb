@@ -16,6 +16,12 @@
   "shareableSecretFeedbackCreateAnother": "{emoji} Create another secret",
   "shareableSecretFeedbackPasswordTitle": "Password (Necessary to decrypt your secret)",
 
+  "shareableSecretDetailsTitle": "Secret available!",
+  "shareableSecretDetailsSubtitle": "Be aware! The following secret can only be revealed {viewCount} time(s)",
+  "shareableSecretDetailsRevealButton": "Reveal secret",
+  "shareableSecretDetailsCreateAnotherButton": "Create another secret",
+
+
   "shareableSecret": "Shareable Secret",
   "password": "Password",
   "validatorNotEmpty": "This field is required",

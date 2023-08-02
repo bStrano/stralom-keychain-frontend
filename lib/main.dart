@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_page.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_register_page.dart';
+import 'package:keychain_frontend/widgets/DefaultAppBar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +16,15 @@ final _router = GoRouter(
       builder: (_, __) => const MyHomePage(title: 'Stralom Keychain'),
       routes: [
         GoRoute(
-          path: 'details',
-          builder: (_, __) => Scaffold(
-            appBar: AppBar(title: const Text('Details Screen')),
-          ),
-        ),
+          path: 'detail/:id',
+          builder: (_, state) => Scaffold(
+              body: ShareableSecretDetailPage(
+                secretId: state.pathParameters['id']!,
+              ),
+              appBar: const DefaultAppBar(
+                title: 'Stralom Keychain',
+              )),
+        )
       ],
     ),
   ],
@@ -134,20 +140,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: const [
-          TextButton(
-            onPressed: null,
-            child: Text('Log in'),
-          ),
-          TextButton(
-            onPressed: null,
-            child: Text('Sing up'),
-          ),
-        ],
+      appBar: DefaultAppBar(
+        title: widget.title,
       ),
       body: Container(
+        margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.only(top: 50),
         child: const ShareableSecretPage(),
       ),
