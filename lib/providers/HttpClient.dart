@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-
-import '../constants/config.dart';
+import 'package:keychain_frontend/constants/config.dart';
 
 class AppHttpClient {
   static final AppHttpClient _instance = AppHttpClient._internal();
@@ -13,12 +12,7 @@ class AppHttpClient {
 
   AppHttpClient._internal();
 
-  performUnauthenticatedRequest(RequestOptions requestOptions) async {
-    dioClient.fetch(requestOptions);
-  }
-
-  performAuthenticatedRequest(RequestOptions requestOptions) async {
-    // TODO: Add authentication logic
-    dioClient.fetch(requestOptions);
+  Dio getClient() {
+    return dioClient;
   }
 }

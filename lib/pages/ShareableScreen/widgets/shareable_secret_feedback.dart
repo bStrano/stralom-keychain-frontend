@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
+import 'package:keychain_frontend/models/shareable_secret.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../constants/config.dart';
+
 class ShareableSecretFeedback extends StatefulWidget {
-  const ShareableSecretFeedback({super.key});
+  final ShareableSecret shareableSecret;
+  final Function onSuccess;
+
+  const ShareableSecretFeedback(
+      {super.key, required this.shareableSecret, required this.onSuccess});
 
   @override
   State<ShareableSecretFeedback> createState() =>
@@ -13,6 +22,7 @@ class ShareableSecretFeedback extends StatefulWidget {
 class _ShareableSecretFeedbackState extends State<ShareableSecretFeedback>
     with TickerProviderStateMixin {
   bool animationFinished = false;
+  String get url => '${Config.url}/#/detail/${widget.shareableSecret.id}';
   late AnimationController _lottieController;
 
   @override
@@ -25,6 +35,17 @@ class _ShareableSecretFeedbackState extends State<ShareableSecretFeedback>
   void dispose() {
     _lottieController.dispose();
     super.dispose();
+  }
+
+  void onSuccess() {
+    widget.onSuccess();
+  }
+
+  void onCopy() {
+    Clipboard.setData(ClipboardData(text: url)).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.copyClipboard)));
+    });
   }
 
   @override
@@ -67,7 +88,11 @@ class _ShareableSecretFeedbackState extends State<ShareableSecretFeedback>
                           Text(
                               AppLocalizations.of(context)!
                                   .shareableSecretFeedbackLifetime(
-                                      '1 view', '1 day'),
+                                      DateFormat.yMMMEd().format(widget
+                                          .shareableSecret.expirationDate),
+                                      AppLocalizations.of(context)!
+                                          .nVisualizations(widget
+                                              .shareableSecret.maxViewCount)),
                               style: Theme.of(context).textTheme.headlineSmall),
                           const SizedBox(height: 50),
                           Row(
@@ -76,8 +101,7 @@ class _ShareableSecretFeedbackState extends State<ShareableSecretFeedback>
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 25),
                                   child: TextFormField(
-                                    initialValue:
-                                        'https://stralom.com/secret/1234567890',
+                                    initialValue: url,
                                     enabled: true,
                                     readOnly: true,
                                     decoration: InputDecoration(
@@ -90,28 +114,42 @@ class _ShareableSecretFeedbackState extends State<ShareableSecretFeedback>
                               ),
                               IconButton(
                                 icon: const Icon(Icons.content_copy),
-                                onPressed: () {},
+                                onPressed: onCopy,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 40),
-                          Text(
-                              AppLocalizations.of(context)!
-                                  .shareableSecretFeedbackPasswordTitle,
-                              style: Theme.of(context).textTheme.titleSmall),
-                          const SizedBox(height: 20),
-                          TextFormField(
-                              initialValue: '2324@#Senha',
-                              enabled: true,
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                  border: const OutlineInputBorder(),
-                                  labelText:
-                                      AppLocalizations.of(context)!.password,
-                                  fillColor:
-                                      Theme.of(context).colorScheme.surface)),
-                          const SizedBox(height: 40),
-                          const Divider(),
+                          widget.shareableSecret.password != null &&
+                                  widget.shareableSecret.password != ''
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start, // Align text to the left
+                                  children: [
+                                    const SizedBox(height: 40),
+                                    Text(
+                                        AppLocalizations.of(context)!
+                                            .shareableSecretFeedbackPasswordTitle,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall),
+                                    const SizedBox(height: 20),
+                                    TextFormField(
+                                        initialValue:
+                                            widget.shareableSecret.password,
+                                        enabled: true,
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                            border: const OutlineInputBorder(),
+                                            labelText:
+                                                AppLocalizations.of(context)!
+                                                    .password,
+                                            fillColor: Theme.of(context)
+                                                .colorScheme
+                                                .surface)),
+                                    const SizedBox(height: 40),
+                                    const Divider(),
+                                  ],
+                                )
+                              : Container(),
                           const SizedBox(height: 40),
                           Row(children: [
                             Expanded(
@@ -128,7 +166,9 @@ class _ShareableSecretFeedbackState extends State<ShareableSecretFeedback>
                           Row(children: [
                             Expanded(
                               child: OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    onSuccess();
+                                  },
                                   child: Padding(
                                       padding: const EdgeInsets.all(20),
                                       child: Text(

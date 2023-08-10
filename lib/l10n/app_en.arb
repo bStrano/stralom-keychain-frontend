@@ -11,7 +11,7 @@
   "shareableSecretRegisterLoadingMessage": "Your shareable link is being generated!",
 
   "shareableSecretFeedbackTitle": "Your shareable link is ready!",
-  "shareableSecretFeedbackLifetime": "Your secret will be available for {viewCount} or {lifeTime}",
+  "shareableSecretFeedbackLifetime": "Your secret will be available for {viewCount} or until {lifeTime}",
   "shareableSecretFeedbackSendMail": "{emoji} Send the link by email",
   "shareableSecretFeedbackCreateAnother": "{emoji} Create another secret",
   "shareableSecretFeedbackPasswordTitle": "Password (Necessary to decrypt your secret)",
@@ -21,7 +21,14 @@
   "shareableSecretDetailsRevealButton": "Reveal secret",
   "shareableSecretDetailsCreateAnotherButton": "Create another secret",
 
+  "nDays": "{count, plural, =0{ days} =1{1 day} other{{count} days}}",
+  "nMonths": "{count, plural, =0{ months} =1{1 month} other{{count} months}}",
+  "nWeeks": "{count, plural, =0{ weeks} =1{1 week} other{{count} weeks}}",
+  "nYears": "{count, plural, =0{ years} =1{1 year} other{{count} years}}",
 
+   "nVisualizations": "{count, plural, =0{ visualizations} =1{1 visualization} other{{count} visualizations}}",
+
+  "copyClipboard": "Copied to your clipboard!",
   "shareableSecret": "Shareable Secret",
   "password": "Password",
   "validatorNotEmpty": "This field is required",

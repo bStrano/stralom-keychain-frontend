@@ -4,6 +4,8 @@ import 'package:keychain_frontend/pages/ShareableScreen/widgets/shareable_secret
 
 import '../../apis/shareable_secret_api.dart';
 import '../../enum/lifetime_enum.dart';
+import '../../models/register_shareable_secret.dart';
+import '../../models/shareable_secret.dart';
 
 class ShareableSecretPage extends StatefulWidget {
   const ShareableSecretPage({super.key});
@@ -20,6 +22,7 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
   String? _secretPassword;
 
   bool showFeedback = false;
+  late ShareableSecret _shareableSecretFeedback;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -29,13 +32,17 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
     });
   }
 
-  void _shareSecret() {
+  void _shareSecret() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // ShareableSecretApi.registerShareableSecret(RegisterShareableSecret(
-      //     _secret, _lifetime, _maxViewCount, _secretPassword));
+      ShareableSecret shareableSecret =
+          await ShareableSecretApi.registerShareableSecret(
+              RegisterShareableSecret(
+                  _secret, _lifetime, _maxViewCount, _secretPassword));
+      print(shareableSecret);
       setState(() {
         showFeedback = true;
+        _shareableSecretFeedback = shareableSecret;
       });
     }
   }
@@ -44,21 +51,80 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
   Widget build(BuildContext context) {
     double cardWidth = 800;
 
-    final List<DropdownMenuItem<LifetimeEnum>> lifetimeEntries =
-        ShareableSecretApi.getLifetimeOptions()
-            .map((item) => DropdownMenuItem<LifetimeEnum>(
-                value: item['value'], child: Text(item['label'])))
-            .toList();
-    final List<DropdownMenuItem<num>> maxViewCountEntries =
-        ShareableSecretApi.getViewCountOptions()
-            .map((item) => DropdownMenuItem<num>(
-                  value: item['value'],
-                  child: Text(item['label']),
-                ))
-            .toList();
+    final List<DropdownMenuItem<LifetimeEnum>> lifetimeEntries = [
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.oneDay,
+          child: Text(AppLocalizations.of(context)!.nDays(1))),
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.twoDays,
+          child: Text(AppLocalizations.of(context)!.nDays(2))),
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.threeDays,
+          child: Text(AppLocalizations.of(context)!.nDays(3))),
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.oneWeek,
+          child: Text(AppLocalizations.of(context)!.nWeeks(1))),
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.twoWeeks,
+          child: Text(AppLocalizations.of(context)!.nWeeks(2))),
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.oneMonth,
+          child: Text(AppLocalizations.of(context)!.nMonths(1))),
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.threeMonths,
+          child: Text(AppLocalizations.of(context)!.nMonths(3))),
+      DropdownMenuItem<LifetimeEnum>(
+          value: LifetimeEnum.oneYear,
+          child: Text(AppLocalizations.of(context)!.nYears(1))),
+    ];
+
+    final List<DropdownMenuItem<num>> maxViewCountEntries = [
+      DropdownMenuItem<num>(
+          value: 1,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(1))),
+      DropdownMenuItem<num>(
+          value: 2,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(2))),
+      DropdownMenuItem<num>(
+          value: 3,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(3))),
+      DropdownMenuItem<num>(
+          value: 5,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(5))),
+      DropdownMenuItem<num>(
+          value: 10,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(10))),
+      DropdownMenuItem<num>(
+          value: 15,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(15))),
+      DropdownMenuItem<num>(
+          value: 25,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(25))),
+      DropdownMenuItem<num>(
+          value: 50,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(50))),
+      DropdownMenuItem<num>(
+          value: 100,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(100))),
+      DropdownMenuItem<num>(
+          value: 250,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(250))),
+      DropdownMenuItem<num>(
+          value: 500,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(500))),
+      DropdownMenuItem<num>(
+          value: 1000,
+          child: Text(AppLocalizations.of(context)!.nVisualizations(1000))),
+    ];
 
     if (showFeedback) {
-      return (const ShareableSecretFeedback());
+      return (ShareableSecretFeedback(
+          onSuccess: () {
+            setState(() {
+              showFeedback = false;
+            });
+          },
+          shareableSecret: _shareableSecretFeedback));
     }
     return (Align(
       child: Column(
