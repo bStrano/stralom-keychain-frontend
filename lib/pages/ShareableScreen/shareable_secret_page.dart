@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:keychain_frontend/models/shareable_secret.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../apis/shareable_secret_api.dart';
 
@@ -126,7 +127,25 @@ class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
             ),
           ));
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return Center(
+              child: (Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Lottie.asset('assets/animations/empty.json'),
+              Text(
+                  AppLocalizations.of(context)!
+                      .shareableSecretDetailsNotFoundTitle,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge
+                      ?.copyWith(color: Theme.of(context).highlightColor)),
+              const SizedBox(height: 10),
+              Text(
+                  AppLocalizations.of(context)!
+                      .shareableSecretDetailsNotFoundSubtitle,
+                  style: Theme.of(context).textTheme.titleMedium)
+            ],
+          )));
         }
 
         // By default, show a loading spinner.
