@@ -20,4 +20,18 @@ class ShareableSecretApi {
         options: requestOption);
     return ShareableSecret.fromJson(response.data);
   }
+
+  static Future<ShareableSecret> getShareableSecret(String id) async {
+    var requestOption = Options(
+      method: 'GET',
+    );
+    Response response = await AppHttpClient()
+        .getClient()
+        .post('$baseUrl/detail/$id', options: requestOption);
+    if (response.statusCode == 200) {
+      return ShareableSecret.fromJson(response.data);
+    } else {
+      throw Exception('Failed to load shareable secret');
+    }
+  }
 }

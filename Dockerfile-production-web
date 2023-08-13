@@ -1,5 +1,8 @@
 #Stage 1 - Install dependencies and build the app in a build environment
 FROM --platform=linux/amd64 debian:latest AS builder
+
+ENV API_URL="https://api-keychain.stralom.com/"
+ENV URL="https://keychain.stralom.com"
 # Install flutter dependencies
 RUN apt-get update
 RUN apt-get install -y curl xz-utils git

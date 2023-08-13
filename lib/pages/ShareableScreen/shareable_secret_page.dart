@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:keychain_frontend/models/shareable_secret.dart';
+
+import '../../apis/shareable_secret_api.dart';
 
 class ShareableSecretDetailPage extends StatefulWidget {
   final String secretId;
@@ -12,81 +15,125 @@ class ShareableSecretDetailPage extends StatefulWidget {
 
 class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
   bool _secretRevealed = false;
+  String? _secret;
   final TextEditingController _controller =
-      TextEditingController(text: '*****************************');
+      TextEditingController(text: "***************************");
+  late Future<ShareableSecret> _futureShareableSecret;
 
-  void _revealSecret() {
+  Future<ShareableSecret> fetchDetail() async {
+    final ShareableSecret shareableSecret =
+        await ShareableSecretApi.getShareableSecret(widget.secretId);
+    setState(() {
+      _secret = shareableSecret.secret;
+    });
+    return shareableSecret;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _futureShareableSecret = fetchDetail();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _controller.value = _controller.value.copyWith(text: _secret);
+    super.didChangeDependencies();
+  }
+
+  void _revealSecret() async {
     setState(() {
       _secretRevealed = true;
     });
-    _controller.value = _controller.value.copyWith(text: "SECRET SECRET VALUE");
+    ShareableSecret shareableSecret =
+        await ShareableSecretApi.getShareableSecret(widget.secretId);
+
+    _controller.value =
+        _controller.value.copyWith(text: shareableSecret.secret);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      child: Container(
-        width: 800,
-        margin: const EdgeInsets.all(25),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align text to the left
-          children: [
-            Text(AppLocalizations.of(context)!.shareableSecretDetailsTitle,
-                style: Theme.of(context).textTheme.headlineLarge),
-            const SizedBox(height: 10),
-            Text(AppLocalizations.of(context)!
-                .shareableSecretDetailsSubtitle(1)),
-            const SizedBox(height: 30),
-            TextFormField(
-                enabled: true,
-                readOnly: true,
-                controller: _controller,
-                decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    labelText: AppLocalizations.of(context)!.shareableSecret,
-                    fillColor: Theme.of(context).colorScheme.surface)),
-            const SizedBox(height: 30),
-            !_secretRevealed
-                ? TextField(
-                    decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: AppLocalizations.of(context)!.password,
-                        fillColor: Theme.of(context).colorScheme.surface))
-                : Container(),
-            const SizedBox(height: 50),
-            !_secretRevealed
-                ? Row(
-                    children: [
-                      Expanded(
-                          child: ElevatedButton(
-                              onPressed: _revealSecret,
-                              child: Text(AppLocalizations.of(context)!
-                                  .shareableSecretDetailsRevealButton
-                                  .toUpperCase()))),
-                    ],
-                  )
-                : Container(),
-            const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Center(
-                child: Text(
-                  AppLocalizations.of(context)!
-                      .shareableSecretDetailsCreateAnotherButton,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelMedium!
-                      .copyWith(color: Theme.of(context).colorScheme.outline),
-                  textAlign: TextAlign.center,
-                ),
+    return FutureBuilder<ShareableSecret>(
+      future: _futureShareableSecret,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return (Align(
+            child: Container(
+              width: 800,
+              margin: const EdgeInsets.all(25),
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Align text to the left
+                children: [
+                  Text(
+                      AppLocalizations.of(context)!.shareableSecretDetailsTitle,
+                      style: Theme.of(context).textTheme.headlineLarge),
+                  const SizedBox(height: 10),
+                  Text(AppLocalizations.of(context)!
+                      .shareableSecretDetailsSubtitle(1)),
+                  const SizedBox(height: 30),
+                  TextFormField(
+                      enabled: true,
+                      readOnly: true,
+                      controller: _controller,
+                      decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText:
+                              AppLocalizations.of(context)!.shareableSecret,
+                          fillColor: Theme.of(context).colorScheme.surface)),
+                  const SizedBox(height: 30),
+                  !_secretRevealed
+                      ? TextField(
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              labelText: AppLocalizations.of(context)!.password,
+                              fillColor: Theme.of(context).colorScheme.surface))
+                      : Container(),
+                  const SizedBox(height: 50),
+                  !_secretRevealed
+                      ? Row(
+                          children: [
+                            Expanded(
+                                child: ElevatedButton(
+                                    onPressed: _revealSecret,
+                                    child: Text(AppLocalizations.of(context)!
+                                        .shareableSecretDetailsRevealButton
+                                        .toUpperCase()))),
+                          ],
+                        )
+                      : Container(),
+                  const SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .shareableSecretDetailsCreateAnotherButton,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(
+                                color: Theme.of(context).colorScheme.outline),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          ));
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        // By default, show a loading spinner.
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

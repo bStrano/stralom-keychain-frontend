@@ -39,7 +39,6 @@ class _ShareableSecretPageState extends State<ShareableSecretPage> {
           await ShareableSecretApi.registerShareableSecret(
               RegisterShareableSecret(
                   _secret, _lifetime, _maxViewCount, _secretPassword));
-      print(shareableSecret);
       setState(() {
         showFeedback = true;
         _shareableSecretFeedback = shareableSecret;
