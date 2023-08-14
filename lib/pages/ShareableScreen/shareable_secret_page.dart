@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:keychain_frontend/models/shareable_secret.dart';
+import 'package:keychain_frontend/models/shareable_secret_metadata.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../apis/shareable_secret_api.dart';
@@ -16,16 +17,16 @@ class ShareableSecretDetailPage extends StatefulWidget {
 
 class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
   bool _secretRevealed = false;
-  String? _secret;
+  ShareableSecretMetadata? _shareableSecret;
   final TextEditingController _controller =
       TextEditingController(text: "***************************");
-  late Future<ShareableSecret> _futureShareableSecret;
+  late Future<ShareableSecretMetadata> _futureShareableSecret;
 
-  Future<ShareableSecret> fetchDetail() async {
-    final ShareableSecret shareableSecret =
-        await ShareableSecretApi.getShareableSecret(widget.secretId);
+  Future<ShareableSecretMetadata> fetchMetadata() async {
+    final ShareableSecretMetadata shareableSecret =
+        await ShareableSecretApi.getShareableSecretMetadata(widget.secretId);
     setState(() {
-      _secret = shareableSecret.secret;
+      _shareableSecret = shareableSecret;
     });
     return shareableSecret;
   }
@@ -33,21 +34,21 @@ class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
   @override
   void initState() {
     super.initState();
-    _futureShareableSecret = fetchDetail();
+    _futureShareableSecret = fetchMetadata();
   }
 
   @override
   void didChangeDependencies() {
-    _controller.value = _controller.value.copyWith(text: _secret);
     super.didChangeDependencies();
   }
 
   void _revealSecret() async {
+    final ShareableSecret shareableSecret =
+        await ShareableSecretApi.visualizeShareableSecret(widget.secretId);
+
     setState(() {
       _secretRevealed = true;
     });
-    ShareableSecret shareableSecret =
-        await ShareableSecretApi.getShareableSecret(widget.secretId);
 
     _controller.value =
         _controller.value.copyWith(text: shareableSecret.secret);
@@ -55,7 +56,7 @@ class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ShareableSecret>(
+    return FutureBuilder<ShareableSecretMetadata>(
       future: _futureShareableSecret,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -72,7 +73,8 @@ class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
                       style: Theme.of(context).textTheme.headlineLarge),
                   const SizedBox(height: 10),
                   Text(AppLocalizations.of(context)!
-                      .shareableSecretDetailsSubtitle(1)),
+                      .shareableSecretDetailsSubtitle(
+                          _shareableSecret!.remainingViews)),
                   const SizedBox(height: 30),
                   TextFormField(
                       enabled: true,
@@ -84,7 +86,7 @@ class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
                               AppLocalizations.of(context)!.shareableSecret,
                           fillColor: Theme.of(context).colorScheme.surface)),
                   const SizedBox(height: 30),
-                  !_secretRevealed
+                  !_secretRevealed && _shareableSecret?.hasPassword == true
                       ? TextField(
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
