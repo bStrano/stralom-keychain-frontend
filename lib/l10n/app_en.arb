@@ -25,6 +25,12 @@
   "shareableSecretDetailsNotFoundSubtitle": "Either it never existed, or it has already expired.",
 
 
+  "loginUsernameInputPlaceholder": "Email Address",
+  "loginPasswordInputPlaceholder": "Password",
+  "loginButtonSubmit": "Sign In",
+  "loginButtonForgotPassword": "Forgot your password?",
+  "loginButtonRegister": "Register",
+
   "nDays": "{count, plural, =0{ days} =1{1 day} other{{count} days}}",
   "nMonths": "{count, plural, =0{ months} =1{1 month} other{{count} months}}",
   "nWeeks": "{count, plural, =0{ weeks} =1{1 week} other{{count} weeks}}",

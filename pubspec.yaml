@@ -69,6 +69,7 @@ flutter:
   assets:
     - assets/animations/lock-animation.json
     - assets/animations/empty.json
+    - assets/animations/login.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

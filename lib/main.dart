@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_page.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_register_page.dart';
+import 'package:keychain_frontend/pages/login_page.dart';
 import 'package:keychain_frontend/widgets/DefaultAppBar.dart';
 
 void main() {
@@ -22,6 +23,14 @@ final _router = GoRouter(
                 secretId: state.pathParameters['id']!,
               ),
               appBar: const DefaultAppBar(
+                title: 'Stralom Keychain',
+              )),
+        ),
+        GoRoute(
+          path: 'login',
+          builder: (_, state) => const Scaffold(
+              body: LoginPage(),
+              appBar: DefaultAppBar(
                 title: 'Stralom Keychain',
               )),
         )
