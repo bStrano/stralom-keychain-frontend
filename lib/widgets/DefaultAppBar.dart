@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -9,12 +10,16 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
-      actions: const [
+      actions: [
         TextButton(
-          onPressed: null,
-          child: Text('Log in'),
+          onPressed: () {
+            context.goNamed(
+              'vault',
+            );
+          },
+          child: const Text('Vault'),
         ),
-        TextButton(
+        const TextButton(
           onPressed: null,
           child: Text('Sing up'),
         ),

@@ -18,8 +18,8 @@ class ShareableSecretDetailPage extends StatefulWidget {
 class _ShareableSecretDetailPageState extends State<ShareableSecretDetailPage> {
   bool _secretRevealed = false;
   ShareableSecretMetadata? _shareableSecret;
-  final TextEditingController _controller =
-      TextEditingController(text: "***************************");
+  final TextEditingController _controller = TextEditingController(
+      text: "**********************************************");
   late Future<ShareableSecretMetadata> _futureShareableSecret;
 
   Future<ShareableSecretMetadata> fetchMetadata() async {

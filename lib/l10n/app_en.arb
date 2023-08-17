@@ -40,6 +40,7 @@
 
   "copyClipboard": "Copied to your clipboard!",
   "shareableSecret": "Shareable Secret",
+  "username": "Username",
   "password": "Password",
   "validatorNotEmpty": "This field is required",
   "validatorMinLength": "This field must be at least {min} characters long",

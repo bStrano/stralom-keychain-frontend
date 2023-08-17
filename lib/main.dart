@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_page.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_register_page.dart';
+import 'package:keychain_frontend/pages/Vault/vault_home_page.dart';
 import 'package:keychain_frontend/pages/login_page.dart';
 import 'package:keychain_frontend/widgets/DefaultAppBar.dart';
 
@@ -26,10 +27,20 @@ final _router = GoRouter(
                 title: 'Stralom Keychain',
               )),
         ),
+        // TODO: Temp
         GoRoute(
           path: 'login',
           builder: (_, state) => const Scaffold(
               body: LoginPage(),
+              appBar: DefaultAppBar(
+                title: 'Stralom Keychain',
+              )),
+        ),
+        GoRoute(
+          name: 'vault',
+          path: 'vault',
+          builder: (_, state) => const Scaffold(
+              body: VaultHomePage(),
               appBar: DefaultAppBar(
                 title: 'Stralom Keychain',
               )),
