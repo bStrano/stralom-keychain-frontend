@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_page.dart';
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_register_page.dart';
 import 'package:keychain_frontend/pages/Vault/vault_home_page.dart';
@@ -8,7 +9,7 @@ import 'package:keychain_frontend/pages/login_page.dart';
 import 'package:keychain_frontend/widgets/DefaultAppBar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 final _router = GoRouter(
@@ -16,6 +17,9 @@ final _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (_, __) => const MyHomePage(title: 'Stralom Keychain'),
+      redirect: (context, state) {
+        return '/login';
+      },
       routes: [
         GoRoute(
           path: 'detail/:id',
@@ -29,6 +33,7 @@ final _router = GoRouter(
         ),
         // TODO: Temp
         GoRoute(
+          name: 'login',
           path: 'login',
           builder: (_, state) => const Scaffold(
               body: LoginPage(),

@@ -6,6 +6,9 @@ class AppHttpClient {
   final Dio dioClient = Dio(BaseOptions(
     baseUrl: Config.apiUrl,
   ));
+  final Dio dioAuthClient = Dio(BaseOptions(
+    baseUrl: Config.authApiUrl,
+  ));
   factory AppHttpClient() {
     return _instance;
   }
@@ -14,5 +17,9 @@ class AppHttpClient {
 
   Dio getClient() {
     return dioClient;
+  }
+
+  Dio getAuthClient() {
+    return dioAuthClient;
   }
 }
