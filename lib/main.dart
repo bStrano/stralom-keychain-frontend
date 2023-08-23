@@ -6,18 +6,22 @@ import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_page.da
 import 'package:keychain_frontend/pages/ShareableScreen/shareable_secret_register_page.dart';
 import 'package:keychain_frontend/pages/Vault/vault_home_page.dart';
 import 'package:keychain_frontend/pages/login_page.dart';
+import 'package:keychain_frontend/providers/session_provider.dart';
 import 'package:keychain_frontend/widgets/DefaultAppBar.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-final _router = GoRouter(
-  routes: [
+final routerProvider = Provider<GoRouter>((ref) {
+  return GoRouter(routes: [
     GoRoute(
       path: '/',
       builder: (_, __) => const MyHomePage(title: 'Stralom Keychain'),
       redirect: (context, state) {
+        if (ref.read(sessionProvider.notifier).state != null) {
+          return '/vault';
+        }
         return '/login';
       },
       routes: [
@@ -52,8 +56,8 @@ final _router = GoRouter(
         )
       ],
     ),
-  ],
-);
+  ]);
+});
 
 var kColorSchemeLight = ColorScheme.fromSeed(
   seedColor: Colors.deepPurple,
@@ -81,14 +85,17 @@ var kColorSchemeDark = ColorScheme.fromSeed(
   background: const Color.fromRGBO(27, 36, 46, 1),
 );
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     return MaterialApp.router(
-      routerConfig: _router,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
+      routerDelegate: router.routerDelegate,
       title: 'Stralom Keychain',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -155,6 +162,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override

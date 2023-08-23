@@ -62,7 +62,7 @@ class _CopyableInputState extends State<CopyableInput> {
                   borderRadius: BorderRadius.circular(5.0)),
               child: Text(_password)),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         widget.hidable == true
             ? IconButton(
                 onPressed: () {

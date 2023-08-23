@@ -1,34 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keychain_frontend/apis/login_api.dart';
 import 'package:keychain_frontend/models/login_response.dart';
 import 'package:lottie/lottie.dart';
 
 import '../models/login_request.dart';
+import '../providers/session_provider.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String? _username = '';
   String? _password = '';
 
-  void onLogin() async {
+  void onLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       LoginResponse loginResponse = await LoginApi.login(LoginRequest(
         _username!,
         _password!,
       ));
-      print(loginResponse);
+      ref.read(sessionProvider.notifier).createSession(Session(
+          id: loginResponse.id.toString(),
+          userName: loginResponse.name,
+          accessToken: loginResponse.accessToken,
+          refreshToken: loginResponse.refreshToken.code));
     }
-    // TODO: Login Session
-    // Navigator.pushNamed(context, '/home');
+
+    context.goNamed('vault');
   }
 
   @override
@@ -116,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             onPressed: () {
-                              onLogin();
+                              onLogin(context);
                             },
                             child: Text(
                                 AppLocalizations.of(context)!

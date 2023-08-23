@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:keychain_frontend/models/register_shareable_secret.dart';
 import 'package:keychain_frontend/models/shareable_secret_metadata.dart';
-import 'package:keychain_frontend/providers/HttpClient.dart';
+import 'package:keychain_frontend/providers/http_client.dart';
 
 import '../models/shareable_secret.dart';
 

@@ -4,7 +4,7 @@ class LoginResponse {
   num id;
   String email;
   String name;
-  String lastName;
+  String? lastName;
   String accessToken;
   RefreshToken refreshToken;
 
@@ -14,5 +14,5 @@ class LoginResponse {
         name = json['name'],
         lastName = json['lastName'],
         accessToken = json['accessToken'],
-        refreshToken = json['refreshToken'];
+        refreshToken = RefreshToken.fromJson(json['refreshToken']);
 }

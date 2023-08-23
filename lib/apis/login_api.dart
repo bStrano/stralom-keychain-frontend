@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:keychain_frontend/models/login_request.dart';
 import 'package:keychain_frontend/models/login_response.dart';
-import 'package:keychain_frontend/providers/HttpClient.dart';
+import 'package:keychain_frontend/providers/http_client.dart';
 
 class LoginApi {
   LoginApi._();
@@ -16,7 +16,7 @@ class LoginApi {
         '$baseUrl/login',
         data: loginRequest.toJson(),
         options: requestOption);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return LoginResponse.fromJson(response.data);
     } else {
       throw Exception('Failed to load shareable secret');
@@ -28,7 +28,7 @@ class LoginApi {
       method: 'GET',
     );
 
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['refreshToken'] = refreshToken;
     Response response = await AppHttpClient()
         .getAuthClient()

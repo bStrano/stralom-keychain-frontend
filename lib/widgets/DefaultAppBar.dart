@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:keychain_frontend/providers/session_provider.dart';
 
-class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
+class DefaultAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String title;
 
   const DefaultAppBar({super.key, required this.title});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       title: Text(title),
       actions: [
@@ -19,9 +21,11 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
           child: const Text('Vault'),
         ),
-        const TextButton(
-          onPressed: null,
-          child: Text('Sing up'),
+        TextButton(
+          onPressed: () {
+            ref.read(sessionProvider.notifier).deleteSession();
+          },
+          child: const Text('Logout'),
         ),
       ],
     );
