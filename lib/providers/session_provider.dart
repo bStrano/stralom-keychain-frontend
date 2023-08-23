@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keychain_frontend/constants/storage.enum.dart';
 
+import '../router/main_router.dart';
 import '../storage/local_storage.dart';
 
 @immutable
@@ -35,7 +36,9 @@ class Session {
 }
 
 class SessionNotifier extends StateNotifier<Session?> {
-  SessionNotifier() : super(null);
+  SessionNotifier(this.ref) : super(null);
+
+  final StateNotifierProviderRef<SessionNotifier, Session?> ref;
 
   // Let's allow the UI to add todos.
   void createSession(Session session) async {
@@ -51,9 +54,10 @@ class SessionNotifier extends StateNotifier<Session?> {
   void deleteSession() async {
     LocalStorage().deleteAll();
     state = null;
+    ref.read(routerProvider).goNamed('login');
   }
 }
 
 final sessionProvider = StateNotifierProvider<SessionNotifier, Session?>((ref) {
-  return SessionNotifier();
+  return SessionNotifier(ref);
 });
