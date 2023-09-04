@@ -1,8 +1,9 @@
 #Stage 1 - Install dependencies and build the app in a build environment
 FROM --platform=linux/amd64 debian:latest AS builder
 
-ENV API_URL="https://api-keychain.stralom.com/"
-ENV URL="https://keychain.stralom.com"
+ARG API_URL="https://api-keychain.stralom.com/"
+ARG AUTH_URL="https://api-authentication.stralom.com/"
+ARG URL="https://keychain.stralom.com"
 # Install flutter dependencies
 RUN apt-get update
 RUN apt-get install -y curl xz-utils git
@@ -21,7 +22,7 @@ RUN  git config --global --add safe.directory /development/flutter
 # Copy files to container and build
 WORKDIR /app
 COPY . .
-RUN flutter build web
+RUN flutter build web --dart-define=AUTH_API_URL={AUTH_URL} --dart-define=API_URL={API_URL} --dart-define=URL={URL}
 
 # Stage 2 - Create the run-time image
 FROM --platform=linux/amd64 nginx:1.25.1-alpine
