@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:keychain_frontend/models/secret_basic_info.dart';
 
 import '../../../widgets/copyable_input.dart';
 
 class CredentialCard extends StatefulWidget {
-  const CredentialCard({super.key});
+  final SecretBasicInfo secret;
+  const CredentialCard({super.key, required this.secret});
 
   @override
   State<CredentialCard> createState() => _CredentialCardState();
@@ -19,16 +21,18 @@ class _CredentialCardState extends State<CredentialCard> {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
-            const Row(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.key_sharp),
-                SizedBox(width: 15),
+                const Icon(Icons.key_sharp),
+                const SizedBox(width: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Google'),
-                    Text('https://www.google.com'),
+                    Text(widget.secret.title),
+                    Text(widget.secret.description != null
+                        ? widget.secret.description!
+                        : ''),
                   ],
                 ),
               ],
@@ -38,12 +42,12 @@ class _CredentialCardState extends State<CredentialCard> {
             const SizedBox(height: 20),
             CopyableInput(
               label: AppLocalizations.of(context)!.username,
-              value: 'Usuario',
+              value: widget.secret.userName,
             ),
             const SizedBox(height: 20),
             CopyableInput(
                 label: AppLocalizations.of(context)!.password,
-                value: 'Senha',
+                value: '******************************',
                 hidable: true),
           ],
         ),
