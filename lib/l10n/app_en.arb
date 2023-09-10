@@ -25,11 +25,14 @@
   "shareableSecretDetailsNotFoundSubtitle": "Either it never existed, or it has already expired.",
 
 
+  "vaultSecretRegisterTitle": "Register a new secret",
+
   "loginUsernameInputPlaceholder": "Email Address",
   "loginPasswordInputPlaceholder": "Password",
   "loginButtonSubmit": "Sign In",
   "loginButtonForgotPassword": "Forgot your password?",
   "loginButtonRegister": "Register",
+
 
   "nDays": "{count, plural, =0{ days} =1{1 day} other{{count} days}}",
   "nMonths": "{count, plural, =0{ months} =1{1 month} other{{count} months}}",
@@ -42,6 +45,11 @@
   "shareableSecret": "Shareable Secret",
   "username": "Username",
   "password": "Password",
+  "encryptionPassword": "Encryption Password",
+  "title": "Titulo",
+  "subtitle": "Subtitle",
+  "cancel": "Cancel",
+  "save": "Save",
   "validatorNotEmpty": "This field is required",
   "validatorMinLength": "This field must be at least {min} characters long",
   "or": "or",

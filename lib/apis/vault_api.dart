@@ -49,4 +49,19 @@ class VaultApi {
       throw Exception('Failed to load vault secrets');
     }
   }
+
+  static Future<void> register(RegisterSecret secret) async {
+    var requestOption = Options(
+      method: 'POST',
+    );
+    Response response = await AppHttpClient().getAuthenticatedClient().post(
+        '$baseUrl/secrets',
+        data: secret.toJson(),
+        options: requestOption);
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to register vault secret');
+    }
+  }
 }

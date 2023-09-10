@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../pages/ShareableScreen/shareable_secret_page.dart';
 import '../pages/ShareableScreen/shareable_secret_register_page.dart';
 import '../pages/Vault/vault_home_page.dart';
+import '../pages/Vault/widgets/vault_register_dialog.dart';
 import '../pages/login_page.dart';
 import '../providers/session_provider.dart';
 import '../widgets/DefaultAppBar.dart';
@@ -44,12 +45,22 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((ref) {
         GoRoute(
           name: 'vault',
           path: 'vault',
-          builder: (_, state) => const Scaffold(
-              body: VaultHomePage(),
-              appBar: DefaultAppBar(
+          builder: (context, state) => Scaffold(
+              body: const VaultHomePage(),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          const VaultRegisterDialog());
+                },
+                tooltip: 'Add new secret',
+                child: const Icon(Icons.add),
+              ),
+              appBar: const DefaultAppBar(
                 title: 'Stralom Keychain',
               )),
-        )
+        ),
       ],
     ),
   ]);

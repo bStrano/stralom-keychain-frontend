@@ -71,6 +71,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   const SizedBox(height: 30),
                   TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: AppLocalizations.of(context)!
@@ -92,6 +93,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   const SizedBox(height: 30),
                   TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: AppLocalizations.of(context)!
