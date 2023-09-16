@@ -41,7 +41,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    print(width);
     return Form(
       key: _formKey,
       child: Row(
