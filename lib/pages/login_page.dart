@@ -40,25 +40,29 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    print(width);
     return Form(
       key: _formKey,
       child: Row(
         children: [
-          Flexible(
-              flex: 7,
-              child: Center(
-                  child: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    Colors.pinkAccent,
-                    Colors.black,
-                  ],
-                )),
-                child: Center(
-                  child: Lottie.asset('assets/animations/login.json'),
-                ),
-              ))),
+          width > 900
+              ? Flexible(
+                  flex: 7,
+                  child: Center(
+                      child: Container(
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                      colors: [
+                        Colors.pinkAccent,
+                        Colors.black,
+                      ],
+                    )),
+                    child: Center(
+                      child: Lottie.asset('assets/animations/login.json'),
+                    ),
+                  )))
+              : Container(),
           Flexible(
             flex: 4,
             child: Container(
@@ -135,20 +139,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     Theme.of(context).textTheme.labelLarge))),
                   ]),
                   const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceBetween, // use whichever suits your need
-                    children: [
-                      TextButton(
-                          onPressed: () {},
-                          child: Text(AppLocalizations.of(context)!
-                              .loginButtonForgotPassword)),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text(AppLocalizations.of(context)!
-                              .loginButtonRegister)),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment
+                  //       .spaceBetween, // use whichever suits your need
+                  //   children: [
+                  //     TextButton(
+                  //         onPressed: () {},
+                  //         child: Text(AppLocalizations.of(context)!
+                  //             .loginButtonForgotPassword)),
+                  //     TextButton(
+                  //         onPressed: () {},
+                  //         child: Text(AppLocalizations.of(context)!
+                  //             .loginButtonRegister)),
+                  //   ],
+                  // ),
                   const SizedBox(height: 40),
                   Text("Copyright © Stralom${DateTime.now().year}",
                       style: Theme.of(context).textTheme.labelSmall),
