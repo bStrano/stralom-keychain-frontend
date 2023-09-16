@@ -10,12 +10,19 @@ import '../pages/login_page.dart';
 import '../providers/session_provider.dart';
 import '../widgets/DefaultAppBar.dart';
 
+const whitelist = ['/login', '/detail/'];
 final Provider<GoRouter> routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(routes: [
     GoRoute(
       path: '/',
       builder: (_, __) => const MyHomePage(title: 'Stralom Keychain'),
       redirect: (context, state) {
+        for (var element in whitelist) {
+          if (state.uri.toString().contains(element)) {
+            return null;
+          }
+        }
+
         if (ref.read(sessionProvider.notifier).state != null) {
           return '/vault';
         }
