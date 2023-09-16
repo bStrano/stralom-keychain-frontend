@@ -1,9 +1,57 @@
 {
-  "shareSecret": "Share secret",
-  "shareSecretDescription": "Keep sensitive information out of your unsecure channels. Share a secret link that is available for a limited time.",
-  "shareableSecretLifetimeInputPlaceholder": "Define the lifetime of the secret",
+  "shareSecret": "Compartilhar segredo",
 
-  "shareableSecretSubmit": "Share secret",
-  "shareableSecretInputPlaceholder": "Digite o segredo que deseja compartilhar",
-  "shareableSecretPassword": "Digite a senha que será necessária para visualizar o segredo"
+
+  "shareableSecretSubmit": "Compartilhar segredo",
+  "shareableSecretInputPlaceholder": "Digite seu segredo aqui!",
+  "shareableSecretPassword": "Digite a senha que sera necessária para visualizar o seu segredo",
+  "shareSecretDescription": "Mantenha informações sensíveis longe de canais inseguros. Compartilha um link secreto que só estará disponível por tempo limitado.",
+  "shareableSecretLifetimeInputPlaceholder": "Defina o tempo de vida do segredo",
+
+  "shareableSecretRegisterLoadingMessage": "Seu link de compartilhamento está sendo gerado!",
+
+  "shareableSecretFeedbackTitle": "Seu segredo compartilhável está pronto!",
+  "shareableSecretFeedbackLifetime": "Seu segredo ficara disponível por {viewCount} ou até {lifeTime}",
+  "shareableSecretFeedbackSendMail": "{emoji} Enviar esse link por email",
+  "shareableSecretFeedbackCreateAnother": "{emoji} Criar outro segredo",
+  "shareableSecretFeedbackPasswordTitle": "Senha (Necessária para descriptografar o segredo)",
+
+  "shareableSecretDetailsTitle": "Segredo disponível!",
+  "shareableSecretDetailsSubtitle": "Cuidado! O seguinte segredo só pode ser revelado {viewCount} vez(s)",
+  "shareableSecretDetailsRevealButton": "Revelar segredo",
+  "shareableSecretDetailsCreateAnotherButton": "Criar outro segredo",
+
+  "shareableSecretDetailsNotFoundTitle": "Oops! Segredo não encontrado.",
+  "shareableSecretDetailsNotFoundSubtitle": "O segredo nunca existiu, ou já expirou.",
+
+
+  "vaultSecretRegisterTitle": "Cadastre um novo segredo",
+
+  "loginUsernameInputPlaceholder": "Email",
+  "loginPasswordInputPlaceholder": "Senha",
+  "loginButtonSubmit": "Entrar",
+  "loginButtonForgotPassword": "Esqueceu sua senha?",
+  "loginButtonRegister": "Cadastrar",
+
+
+  "nDays": "{count, plural, =0{ dias} =1{1 dia} other{{count} dias}}",
+  "nMonths": "{count, plural, =0{ meses} =1{1 mês} other{{count} meses}}",
+  "nWeeks": "{count, plural, =0{ semanas} =1{1 semana} other{{count} semanas}}",
+  "nYears": "{count, plural, =0{ anos} =1{1 ano} other{{count} anos}}",
+
+  "nVisualizations": "{count, plural, =0{ visualizações} =1{1 visualização} other{{count} visualizações}}",
+
+  "copyClipboard": "Copiado para a área de transferência!",
+  "shareableSecret": "Segredo compartilhável",
+  "username": "Usuário",
+  "password": "Senha",
+  "encryptionPassword": "Chave de encriptação",
+  "title": "Titulo",
+  "subtitle": "Subtitulo",
+  "cancel": "Cancelar",
+  "save": "Salvar",
+  "validatorNotEmpty": "Esse campo é obrigatório",
+  "validatorMinLength": "Esse campo necessita possuir pelo menos {min} caracteres",
+  "or": "ou",
+  "additionalInfo": "Informações adicionais"
 }
