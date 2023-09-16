@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keychain_frontend/apis/vault_api.dart';
 import 'package:keychain_frontend/models/register_secret.dart';
 
-class VaultRegisterDialog extends StatefulWidget {
+import '../../../providers/vault_provider.dart';
+
+class VaultRegisterDialog extends ConsumerStatefulWidget {
   const VaultRegisterDialog({super.key});
 
   @override
-  State<VaultRegisterDialog> createState() => _VaultRegisterDialogState();
+  ConsumerState<VaultRegisterDialog> createState() =>
+      _VaultRegisterDialogState();
 }
 
-class _VaultRegisterDialogState extends State<VaultRegisterDialog> {
+class _VaultRegisterDialogState extends ConsumerState<VaultRegisterDialog> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
   String _title = '';
@@ -24,6 +28,7 @@ class _VaultRegisterDialogState extends State<VaultRegisterDialog> {
       await VaultApi.register(RegisterSecret(
           _username, _password, _title, _subtitle, _encryptionPassword));
       Navigator.pop(context);
+      ref.read(secretProvider.notifier).fetchAll();
     }
   }
 
@@ -115,6 +120,7 @@ class _VaultRegisterDialogState extends State<VaultRegisterDialog> {
 
                       return null;
                     },
+                    maxLines: 1,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: AppLocalizations.of(context)!.password,
@@ -125,6 +131,7 @@ class _VaultRegisterDialogState extends State<VaultRegisterDialog> {
                     onSaved: (value) {
                       _encryptionPassword = value!;
                     },
+                    maxLines: 1,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText:

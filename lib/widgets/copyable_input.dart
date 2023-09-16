@@ -6,9 +6,14 @@ class CopyableInput extends StatefulWidget {
   final String value;
   final String label;
   final bool? hidable;
+  final Function? onLoad;
 
   const CopyableInput(
-      {key, required this.value, required this.label, this.hidable})
+      {key,
+      required this.value,
+      required this.label,
+      this.hidable,
+      this.onLoad})
       : super(key: key);
 
   @override
@@ -18,15 +23,32 @@ class CopyableInput extends StatefulWidget {
 class _CopyableInputState extends State<CopyableInput> {
   String _password = '';
   bool _passwordVisibility = true;
+  bool loadingCopyableInput = false;
 
   @override
   void initState() {
     super.initState();
-
-    togglePasswordVisibility();
+    togglePasswordVisibility(false);
   }
 
-  togglePasswordVisibility() {
+  load() async {
+    if (widget.onLoad != null) {
+      setState(() {
+        loadingCopyableInput = true;
+      });
+      await widget.onLoad!();
+      await Future.delayed(const Duration(milliseconds: 500));
+      setState(() {
+        loadingCopyableInput = false;
+      });
+    }
+  }
+
+  togglePasswordVisibility(bool? mustLoad) async {
+    if (mustLoad == true) {
+      await load();
+    }
+
     setState(() {
       _passwordVisibility = !_passwordVisibility;
       _password = _passwordVisibility == false && widget.hidable == true
@@ -35,9 +57,9 @@ class _CopyableInputState extends State<CopyableInput> {
     });
   }
 
-  void onCopy() {
-    if (_passwordVisibility == false && widget.hidable == true) return;
-    Clipboard.setData(ClipboardData(text: _password)).then((_) {
+  void onCopy() async {
+    await load();
+    Clipboard.setData(ClipboardData(text: widget.value)).then((_) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(AppLocalizations.of(context)!.copyClipboard)));
     });
@@ -63,24 +85,30 @@ class _CopyableInputState extends State<CopyableInput> {
               child: Text(_password)),
         ),
         const SizedBox(width: 10),
-        widget.hidable == true
-            ? IconButton(
-                onPressed: () {
-                  togglePasswordVisibility();
-                },
-                icon: Icon(_passwordVisibility == false
-                    ? Icons.visibility
-                    : Icons.visibility_off),
-                splashRadius: 25,
+        loadingCopyableInput == true
+            ? const CircularProgressIndicator()
+            : Row(
+                children: [
+                  widget.hidable == true
+                      ? IconButton(
+                          onPressed: () {
+                            togglePasswordVisibility(true);
+                          },
+                          icon: Icon(_passwordVisibility == false
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          splashRadius: 25,
+                        )
+                      : Container(),
+                  IconButton(
+                    onPressed: () {
+                      onCopy();
+                    },
+                    icon: const Icon(Icons.content_copy),
+                    splashRadius: 25,
+                  )
+                ],
               )
-            : Container(),
-        IconButton(
-          onPressed: () {
-            onCopy();
-          },
-          icon: const Icon(Icons.content_copy),
-          splashRadius: 25,
-        )
       ])
     ]);
   }

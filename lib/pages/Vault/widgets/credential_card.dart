@@ -1,18 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keychain_frontend/models/secret_basic_info.dart';
+import 'package:keychain_frontend/models/secret_detailed.dart';
 
+import '../../../providers/vault_provider.dart';
 import '../../../widgets/copyable_input.dart';
 
-class CredentialCard extends StatefulWidget {
+class CredentialCard extends ConsumerStatefulWidget {
   final SecretBasicInfo secret;
   const CredentialCard({super.key, required this.secret});
 
   @override
-  State<CredentialCard> createState() => _CredentialCardState();
+  ConsumerState<CredentialCard> createState() => _CredentialCardState();
 }
 
-class _CredentialCardState extends State<CredentialCard> {
+class _CredentialCardState extends ConsumerState<CredentialCard> {
+  bool _loaded = false;
+  String _password = '******************************';
+
+  load() async {
+    if (_loaded) return;
+    print('Loading password');
+    SecretDetailed? detailed =
+        await ref.read(secretProvider.notifier).getDetail(widget.secret.id);
+
+    print(detailed);
+    setState(() {
+      _loaded = true;
+      _password = detailed!.password;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -47,8 +66,9 @@ class _CredentialCardState extends State<CredentialCard> {
             const SizedBox(height: 20),
             CopyableInput(
                 label: AppLocalizations.of(context)!.password,
-                value: '******************************',
-                hidable: true),
+                value: _password,
+                hidable: true,
+                onLoad: load)
           ],
         ),
       ),

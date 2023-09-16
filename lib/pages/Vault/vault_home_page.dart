@@ -1,46 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:keychain_frontend/models/secret_basic_info.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keychain_frontend/pages/Vault/widgets/credential_card.dart';
 
-import '../../apis/vault_api.dart';
+import '../../providers/vault_provider.dart';
 
-class VaultHomePage extends StatefulWidget {
+class VaultHomePage extends ConsumerStatefulWidget {
   const VaultHomePage({super.key});
 
   @override
-  State<VaultHomePage> createState() => _VaultHomePageState();
+  ConsumerState<VaultHomePage> createState() => _VaultHomePageState();
 }
 
-class _VaultHomePageState extends State<VaultHomePage> {
-  List<SecretBasicInfo> _secrets = [];
-  late Future<List<SecretBasicInfo>> _futureSecrets;
-
-  Future<List<SecretBasicInfo>> fetchData() async {
-    final List<SecretBasicInfo> secrets = await VaultApi.findAll();
-    setState(() {
-      _secrets = secrets;
-    });
-    return secrets;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
+class _VaultHomePageState extends ConsumerState<VaultHomePage> {
   @override
   void initState() {
     super.initState();
-    _futureSecrets = fetchData();
-    print("init state");
+    ref.read(secretProvider.notifier).fetchAll();
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    Secrets secretsContext = ref.watch(secretProvider);
 
     return FutureBuilder(
-        future: _futureSecrets,
+        future: secretsContext.futureSecrets,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data?.isEmpty ?? true) {
@@ -66,7 +50,7 @@ class _VaultHomePageState extends State<VaultHomePage> {
               padding: const EdgeInsets.all(20),
               itemCount: snapshot.data?.length,
               itemBuilder: (context, index) {
-                return CredentialCard(secret: _secrets[index]);
+                return CredentialCard(secret: snapshot.data![index]);
               },
             );
           } else {

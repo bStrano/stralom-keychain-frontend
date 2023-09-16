@@ -1,12 +1,12 @@
 class SecretDetailed {
   String id;
   String title;
-  String description;
+  String? description;
   String userName;
   String password;
-  DateTime lastPasswordChange;
+  DateTime? lastPasswordChange;
   DateTime createdAt;
-  DateTime updatedAt;
+  DateTime? updatedAt;
 
   SecretDetailed(this.id, this.title, this.description, this.userName,
       this.password, this.lastPasswordChange, this.createdAt, this.updatedAt);
@@ -17,7 +17,11 @@ class SecretDetailed {
         description = json['description'],
         userName = json['userName'],
         password = json['password'],
-        lastPasswordChange = DateTime.parse(json['lastPasswordChange']),
+        lastPasswordChange = json['lastPasswordChange'] != null
+            ? DateTime.parse(json['lastPasswordChange'])
+            : null,
         createdAt = DateTime.parse(json['createdAt']),
-        updatedAt = DateTime.parse(json['updatedAt']);
+        updatedAt = json['updatedAt'] != null
+            ? DateTime.parse(json['updatedAt'])
+            : null;
 }
